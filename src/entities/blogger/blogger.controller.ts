@@ -1,5 +1,5 @@
-import {Body, Controller, Delete, Get, HttpCode, Inject, Param, ParseIntPipe, ParseUUIDPipe, Post, Put, Query, UseGuards, Request} from '@nestjs/common';
-import { CratePostDtoWithoutBlogId, CreatePostDto } from '../posts/dto/post.dto';
+import {Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Post, Put, Query, UseGuards} from '@nestjs/common';
+import { CratePostDtoWithoutBlogId } from '../posts/dto/post.dto';
 import { PostService } from '../posts/post.service';
 import { AuthGuard } from '../../infrastructure/guards/auth.guard';
 import {BloggerService} from "./blogger.service";
@@ -14,6 +14,7 @@ export class BloggerController {
         private bloggerService: BloggerService,
         private postService: PostService,
     ) {}
+    
     @Get()
     getAll(@Query() query: QueryBlogDto) {
         return this.bloggerService.findAll(query);
@@ -38,14 +39,14 @@ export class BloggerController {
 
     @UseGuards(AuthGuard)
     @Post(':id/posts') 
-    creatPostForBlogId(@Param('id') id: string, @Body() postDto: CratePostDtoWithoutBlogId) {
-        // проверка блокID в блогрепозитории {}
-        return this.postService.creatPostForBlogId(id, postDto)
+    async creatPostForBlogId(@Param('id') id: string, @Body() postDto: CratePostDtoWithoutBlogId) {
+        const donorBlogger = await this.bloggerService.findOne(id)
+        if (donorBlogger) {
+            return this.postService.creatPostForBlogId(postDto, donorBlogger.id, donorBlogger.name)
+        } else {
+            throw new HttpException('Blogger for create-post, not found', HttpStatus.NOT_FOUND);
+        }
     }
-    /*creatPostForBlogId(@Param('id') id: string, @Request() req) {
-
-        // return this.postService.creatPostForBlogId(id, postDto)
-    }*/
 
     @UseGuards(AuthGuard)
     @HttpCode(204)

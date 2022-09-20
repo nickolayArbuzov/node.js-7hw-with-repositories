@@ -5,6 +5,7 @@ import { BloggerController } from './blogger.controller';
 import { bloggerProviders } from './blogger.providers';
 import { BloggerService } from './blogger.service';
 import { BlogIsExistRule } from './customValidateBlog';
+import { BlogRepositoryTypeORM } from './blog.repositoryTypeORM';
 
 
 @Module({
@@ -13,6 +14,7 @@ import { BlogIsExistRule } from './customValidateBlog';
   providers: [
     ...bloggerProviders,
     BloggerService,
+    BlogRepositoryTypeORM,
     BlogIsExistRule,
   ],
   exports: [BloggerService, bloggerProviders.find(b => b.provide==='BLOGGER_REPOSITORY')],

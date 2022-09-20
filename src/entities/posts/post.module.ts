@@ -6,6 +6,7 @@ import { PostController } from './post.controller';
 import { postProviders } from './post.providers';
 import { PostService } from './post.service';
 import { AuthModule } from '../../infrastructure/auth/auth.module';
+import { PostRepositoryTypeORM } from './post.repositoryTypeORM';
 
 @Module({
   controllers: [PostController],
@@ -13,6 +14,7 @@ import { AuthModule } from '../../infrastructure/auth/auth.module';
   providers: [
     ...postProviders,
     PostService,
+    PostRepositoryTypeORM,
   ],
   exports: [PostService, postProviders.find(p => p.provide === 'POST_REPOSITORY')],
 })

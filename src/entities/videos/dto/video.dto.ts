@@ -31,7 +31,7 @@ export class CreateVideoDto {
     @Max(18)
     readonly minAgeRestriction: number | undefined;
 
-    @IsEnum(availableResolutions, {each: true}) //custom
+    @IsEnum(availableResolutions, {each: true})
     readonly availableResolutions: availableResolutions[];
 }
 
