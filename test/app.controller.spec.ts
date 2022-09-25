@@ -9,6 +9,7 @@ describe('PostController (e2e)', () => {
 
   const blogController = '/blogs';
   const postController = '/posts';
+  const videoController = '/videos';
   const testingController = '/testing';
 
   beforeAll(async () => {
@@ -50,13 +51,15 @@ describe('PostController (e2e)', () => {
     await app.close();
   });
 
-  describe('/post (GET)', () => {
-    const postUrl = `${postController}`;
+  describe('/videos (POST)', () => {
+    const videoUrl = `${videoController}`;
 
-    it('get post , ', async () => {
+    it('create video , ', async () => {
       // add some services for prepare data in db
 
-      const response = await request(app.getHttpServer()).get(postUrl)
+      const response = await request(app.getHttpServer())
+        .post(videoUrl)
+        .send({title: 'title', author: 'author'})
       console.log(response.body)
       expect(response.status).toBe(400);
       expect(response.body).toEqual({ errors: [] });

@@ -3,19 +3,21 @@ import { Repository } from 'typeorm';
 import { Video } from './videos.entity';
 import { CreateVideoDto, UpdateVideoDto } from './dto/video.dto';
 import { addDays } from '../../helpers/date';
+import { IVideoRepositoryInterface } from './interface/repoInterface';
 
 @Injectable()
-export class VideoRepositoryTypeORM {
+export class VideoRepositoryTypeORM implements IVideoRepositoryInterface {
   constructor(
     @Inject('VIDEO_REPOSITORY')
     private videoRepository: Repository<Video>,
   ) {}
 
   async findAll() {
+    console.log('typeorm')
     return this.videoRepository.find();
   }
 
-  async findOne(id) {
+  async findOne(id: string) {
     const donorVideo = await this.videoRepository.findOne({where: {id: id}});
     if(donorVideo) {
       return donorVideo
@@ -37,7 +39,7 @@ export class VideoRepositoryTypeORM {
     return newVideo;
   }
 
-  async updateVideo(id: number, dto: UpdateVideoDto) {
+  async updateVideo(id: string, dto: UpdateVideoDto) {
     const donorVideo = await this.videoRepository.findOne({where: {id: id}});
     if(donorVideo) {
       const newVideo = {
@@ -56,7 +58,7 @@ export class VideoRepositoryTypeORM {
     }
   }
 
-  async deleteVideo(id: number) {
+  async deleteVideo(id: string) {
     const donorVideo = await this.videoRepository.findOne({where: {id: id}});
     if(donorVideo) {
       await this.videoRepository.delete(id)

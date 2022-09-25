@@ -4,9 +4,10 @@ import { queryDefault } from '../../helpers/constants/constants';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
+import { IUserRepositoryInterface } from './interface/repoInterface';
 
 @Injectable()
-export class UserRepositoryTypeORM {
+export class UserRepositoryTypeORM implements IUserRepositoryInterface {
   constructor(
     @Inject('USER_REPOSITORY')
     private userRepository: Repository<User>,

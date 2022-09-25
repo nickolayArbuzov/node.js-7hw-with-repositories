@@ -4,8 +4,11 @@ import { Blogger } from './blogger.entity';
 import { CreateBloggerDto, UpdateBloggerDto } from './dto/blogger.dto';
 import { QueryBlogDto } from '../../helpers/commonDTO/query.dto';
 import { queryDefault } from '../../helpers/constants/constants';
+import { IBlogRepositoryInterface } from './interface/repoInterface';
 
-export class BlogRepositoryTypeORM {
+
+@Injectable()
+export class BlogRepositoryTypeORM implements IBlogRepositoryInterface {
   constructor(
     @Inject('BLOGGER_REPOSITORY') 
     private readonly bloggerRepository: Repository<Blogger>

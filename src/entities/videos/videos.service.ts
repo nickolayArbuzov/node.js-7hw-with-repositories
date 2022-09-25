@@ -1,21 +1,22 @@
-import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { Video } from './videos.entity';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateVideoDto, UpdateVideoDto } from './dto/video.dto';
-import { addDays } from '../../helpers/date';
 import { VideoRepositoryTypeORM } from './video.repositoryTypeORM';
+import { VideoRepositoryMongo } from './video.repositoryMongo';
+import { IVideoRepositoryInterface } from './interface/repoInterface';
+import {ConfigService} from '@nestjs/config'
 
 @Injectable()
 export class VideoService {
   constructor(
-    private videoRepository: VideoRepositoryTypeORM,
+    @Inject('Repository')
+    private readonly videoRepository: IVideoRepositoryInterface,
   ) {}
 
   async findAll() {
     return this.videoRepository.findAll();
   }
 
-  async findOne(id) {
+  async findOne(id: string) {
     return this.videoRepository.findOne(id);
   }
 
@@ -23,12 +24,12 @@ export class VideoService {
     return this.videoRepository.createVideo(dto);
   }
 
-  async updateVideo(id: number, dto: UpdateVideoDto) {
+  /*async updateVideo(id: string, dto: UpdateVideoDto) {
     return this.videoRepository.updateVideo(id, dto);
   }
 
-  async deleteVideo(id: number) {
+  async deleteVideo(id: string) {
     return this.videoRepository.deleteVideo(id);
-  }
+  }*/
   
 }

@@ -1,6 +1,6 @@
 import { Transform, TransformFnParams } from "class-transformer";
 import { IsOptional, IsString, IsUUID, Length, Validate } from "class-validator";
-import { BlogIsExistRule, BlogIsExist } from "../../blogger/customValidateBlog";
+import { BlogIsExistRule } from "../../blogger/customValidateBlog";
 
 export class CreatePostDto {
     @Transform(({ value }: TransformFnParams) => value?.trim())

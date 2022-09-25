@@ -4,9 +4,10 @@ import { Repository } from 'typeorm';
 import { Comment } from './comment.entity';
 import { CreateCommentDto } from './dto/comment.dto';
 import { queryDefault } from '../../helpers/constants/constants';
+import { ICommentRepositoryInterface } from './interface/repoInterface';
 
 @Injectable()
-export class CommentRepositoryTypeORM {
+export class CommentRepositoryTypeORM implements ICommentRepositoryInterface {
   constructor(
     @Inject('COMMENT_REPOSITORY')
     private commentRepository: Repository<Comment>,

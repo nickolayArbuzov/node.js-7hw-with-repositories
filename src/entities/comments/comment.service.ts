@@ -1,12 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { QueryBlogDto } from '../../helpers/commonDTO/query.dto';
 import { CreateCommentDto } from './dto/comment.dto';
 import { CommentRepositoryTypeORM } from './comment.repositoryTypeORM';
+import { ICommentRepositoryInterface } from './interface/repoInterface';
 
 @Injectable()
 export class CommentService {
   constructor(
-    private readonly commentRepository: CommentRepositoryTypeORM,
+    @Inject('Repository')
+    private readonly commentRepository: ICommentRepositoryInterface,
   ) {}
 
   async findAllCommentsByPostId(id: string, query: QueryBlogDto) {

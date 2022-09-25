@@ -2,14 +2,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException, INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
-import { HttpExceptionFilter } from './infrastructure/filters/http-exeption.filter';
+import { HttpExceptionFilter } from '../src/infrastructure/filters/http-exeption.filter';
+import { addDays } from './helpers/date';
 
 describe('PostController (e2e)', () => {
   let app: INestApplication;
 
   const blogController = '/blogs';
-    const postController = '/posts';
-    const testingController = '/testing';
+  const postController = '/posts';
+  const videoController = '/videos';
+  const testingController = '/testing';
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -37,26 +39,42 @@ describe('PostController (e2e)', () => {
     await app.init();
   });
 
+  /*beforeEach(async () => {
+    it('should delete all data in DB and return 204 status code', async () => {
+      const url = `${testingController}/all-data`;
+      const response = await request(app.getHttpServer()).delete(url);
+      expect(response.status).toBe(204);
+      expect(response.body).toEqual({});
+    });
+  })*/
+
   afterAll(async () => {
     await app.close();
   });
 
-  beforeEach(async () => {
-    const url = `${testingController}/all-data`;
-    await request(app.getHttpServer()).delete(url);
-    console.log('before-each')
-  });
+  describe('/videos (POST)', () => {
+    const videoUrl = `${videoController}`;
 
-  describe('/post (GET)', () => {
-    const postUrl = `${postController}`;
-    
-    it('get post , ', async () => {
-      console.log('getpost')
+    it('create video , ', async () => {
       // add some services for prepare data in db
-
-      const response = await request(app.getHttpServer()).get(postUrl)
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual([]);
+      const response = await request(app.getHttpServer())
+        .post(videoUrl)
+        .send({
+          title: 'title', 
+          author: 'author', 
+          availableResolutions: ['P144']
+        })
+      console.log(response.body)
+      console.log(addDays(response.body.createdAt, 1).toISOString())
+      expect(response.status).toBe(201);
+      expect(response.body).toEqual({ 
+        author: "author", 
+        availableResolutions: ["P144"],
+        createdAt: response.body.createdAt,
+        minAgeRestriction: null,
+        publicationDate: addDays(response.body.createdAt, 1).toISOString(),
+        title: "title", 
+      });
     });
     
 

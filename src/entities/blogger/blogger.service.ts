@@ -1,13 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateBloggerDto, UpdateBloggerDto } from './dto/blogger.dto';
 import { QueryBlogDto } from '../../helpers/commonDTO/query.dto';
 import { BlogRepositoryTypeORM } from './blog.repositoryTypeORM';
+import { IBlogRepositoryInterface } from './interface/repoInterface';
 
 
 @Injectable()
 export class BloggerService {
   constructor(
-    private readonly blogRepository: BlogRepositoryTypeORM
+    @Inject('Repository')
+    private readonly blogRepository: IBlogRepositoryInterface
   ) {}
 
   async findAllPostsByBlogId(id: string, query: QueryBlogDto) {
@@ -18,7 +20,6 @@ export class BloggerService {
     return this.blogRepository.findAll(query)
   }
 
-  // TODO: need to refactor
   async findOneForCustomDecorator(id: string) {
     return this.blogRepository.findOneForCustomDecorator(id)
   }

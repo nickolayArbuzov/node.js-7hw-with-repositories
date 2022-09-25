@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreatePostDto, UpdatePostDto } from './dto/post.dto';
 import { QueryBlogDto } from '../../helpers/commonDTO/query.dto';
 import { PostRepositoryTypeORM } from './post.repositoryTypeORM';
@@ -6,6 +6,7 @@ import { PostRepositoryTypeORM } from './post.repositoryTypeORM';
 @Injectable()
 export class PostService {
   constructor(
+    @Inject('Repository')
     private readonly postRepository: PostRepositoryTypeORM,
   ) {}
 

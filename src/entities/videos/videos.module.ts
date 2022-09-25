@@ -1,18 +1,36 @@
+import {ConfigModule} from '@nestjs/config'
+import config from '../../configuration/config.configuration';
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from '../database/database.module';
+import { VideoRepositoryMongo } from './video.repositoryMongo';
 import { VideoRepositoryTypeORM } from './video.repositoryTypeORM';
 import { VideoController } from './videos.controller';
 import { videoProviders } from './videos.providers';
 import { VideoService } from './videos.service';
 
+
 @Module({
   controllers: [VideoController],
-  imports: [DatabaseModule],
+  imports: [
+    DatabaseModule, 
+    ConfigModule.forRoot({
+      envFilePath: '.env', 
+      isGlobal: true,
+      load: [config],
+    }),
+  ],
   providers: [
     ...videoProviders,
     VideoService,
-    VideoRepositoryTypeORM,
+    {
+      provide: 'Repository',
+      useClass: process.env.REPOSITORY === 'mongo' ? VideoRepositoryMongo : VideoRepositoryTypeORM,
+    },
   ],
-  exports: [VideoService, videoProviders.find(v => v.provide === 'VIDEO_REPOSITORY')]
+  exports: [
+    VideoService, 
+    videoProviders.find(v => v.provide === 'VIDEO_REPOSITORY'), 
+    videoProviders.find(v => v.provide === 'VIDEO_MONGOOSE'),
+  ]
 })
 export class VideoModule {}

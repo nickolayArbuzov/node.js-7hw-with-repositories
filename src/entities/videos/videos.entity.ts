@@ -3,8 +3,8 @@ import { availableResolutions } from './dto/video.dto';
 
 @Entity('video')
 export class Video {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ length: 40 })
   title: string;

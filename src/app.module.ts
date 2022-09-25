@@ -1,7 +1,8 @@
+import { ConfigModule } from '@nestjs/config';
+import config from './configuration/config.configuration';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './entities/database/database.module';
 import { BloggerModule } from './entities/blogger/blogger.module';
 import { PostModule } from './entities/posts/post.module';
@@ -13,11 +14,14 @@ import { AuthModule } from './infrastructure/auth/auth.module';
 
 @Module({
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+  ],
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env', 
       isGlobal: true,
+      load: [config],
     }),
     DatabaseModule,
     BloggerModule,

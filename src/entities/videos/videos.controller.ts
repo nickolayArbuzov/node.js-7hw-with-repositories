@@ -13,7 +13,7 @@ export class VideoController {
     }
 
     @Get(':id')
-    getOne(@Param('id', ParseIntPipe) id: number) {
+    getOne(@Param('id', ParseIntPipe) id: string) {
         return this.videoService.findOne(id)
     }
 
@@ -22,16 +22,16 @@ export class VideoController {
         return this.videoService.createVideo(videoDto);
     }
 
-    @HttpCode(204)
+    /*@HttpCode(204)
     @Delete(':id')
-    delete(@Param('id', ParseIntPipe) id: number){
+    delete(@Param('id', ParseIntPipe) id: string){
         return this.videoService.deleteVideo(id)
     }
 
     @HttpCode(204)
     @Put(':id')
-    update(@Param('id', ParseIntPipe) id: number, @Body() videoDto: UpdateVideoDto){
+    update(@Param('id', ParseIntPipe) id: string, @Body() videoDto: UpdateVideoDto){
         return this.videoService.updateVideo(id, videoDto)
-    }
+    }*/
 
 }

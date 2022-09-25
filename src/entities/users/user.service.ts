@@ -1,12 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { QueryUserDto } from '../../helpers/commonDTO/query.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { IUserRepositoryInterface } from './interface/repoInterface';
 import { UserRepositoryTypeORM } from './user.repositoryTypeORM';
 
 @Injectable()
 export class UserService {
   constructor(
-    private userRepository: UserRepositoryTypeORM,
+    @Inject('Repository')
+    private userRepository: IUserRepositoryInterface,
   ) {}
 
   async findAllt () {
@@ -38,6 +40,6 @@ export class UserService {
   }
 
   async deleteUser(id: string){
-    return this.deleteUser(id)
+    return this.userRepository.deleteUser(id)
   }
 }

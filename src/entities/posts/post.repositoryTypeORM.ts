@@ -5,9 +5,10 @@ import { Post } from './post.entity';
 import { BloggerService } from '../blogger/blogger.service';
 import { QueryBlogDto } from '../../helpers/commonDTO/query.dto';
 import { queryDefault } from '../../helpers/constants/constants';
+import { IPostRepositoryInterface } from './interface/repoInterface';
 
 @Injectable()
-export class PostRepositoryTypeORM {
+export class PostRepositoryTypeORM implements IPostRepositoryInterface {
   constructor(
     @Inject('POST_REPOSITORY') 
     private readonly postRepository: Repository<Post>,
