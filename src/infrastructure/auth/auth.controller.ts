@@ -26,11 +26,25 @@ export class AuthController {
         return this.authService.registrationConfirmation(registrationConfirmationDto)
     }
 
-
     @HttpCode(204)
     @Post('registration-email-resending')
     registrationEmailResending(@Body() registrationEmailResendingDto: RegistrationEmailResendingDto ){
         return this.authService.registrationEmailResending(registrationEmailResendingDto)
+    }
+
+    @Post('refresh-token')
+    refreshTokens(@Body() registrationEmailResendingDto: RegistrationEmailResendingDto ){
+        return this.authService.refreshTokens()
+    }
+
+    @Post('logout')
+    logout(@Body() registrationEmailResendingDto: RegistrationEmailResendingDto ){
+        return this.authService.logout()
+    }
+
+    @Get('me')
+    authMe(@Body() registrationEmailResendingDto: RegistrationEmailResendingDto ){
+        return this.authService.authMe()
     }
 
 }

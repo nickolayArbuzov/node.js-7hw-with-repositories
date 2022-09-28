@@ -6,6 +6,7 @@ import { User } from '../users/user.entity';
 import { Post } from '../posts/post.entity';
 import { Comment } from '../comments/comment.entity';
 import { Video } from '../videos/videos.entity';
+import { JWT } from '../jwt/jwt.entity';
 
 export const databaseProviders = [
   {
@@ -18,7 +19,7 @@ export const databaseProviders = [
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASS,
         database: process.env.POSTGRES_DB,
-        entities: [Blogger, User, Post, Comment, Video],
+        entities: [Blogger, User, Post, Comment, Video, JWT],
         synchronize: true,
         ssl: {rejectUnauthorized: false}
       });

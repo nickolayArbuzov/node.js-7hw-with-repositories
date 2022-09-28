@@ -1,7 +1,8 @@
 import { Comment } from '../comments/comment.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Code } from 'typeorm';
+import { JWT } from '../jwt/jwt.entity';
 
-@Entity('user')
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -26,6 +27,9 @@ export class User {
 
   @OneToMany(() => Comment, comment => comment.user)
   comments: Comment[]
+
+  @OneToMany(() => JWT, jwt => jwt.users)
+  jwt: JWT[]
 
 }
 

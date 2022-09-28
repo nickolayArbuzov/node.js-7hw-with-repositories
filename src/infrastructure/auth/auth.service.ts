@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { User } from '../../entities/users/user.entity';
+import { JWT } from '../../entities/jwt/jwt.entity';
 import { Repository } from 'typeorm';
 import { AuthDto, RegistrationConfirmationDto, RegistrationDto, RegistrationEmailResendingDto } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -11,6 +12,8 @@ export class AuthService {
   constructor(
     @Inject('USER_REPOSITORY')
     private readonly userRepository: Repository<User>,
+    @Inject('JWT_REPOSITORY')
+    private readonly jwtRepository: Repository<JWT>,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -18,7 +21,18 @@ export class AuthService {
     const auth: User = await this.userRepository.findOne({where: {login: dto.login, password: dto.password}})
     if (auth) {
       const payload = {id: auth.id, login: auth.login}
-      return {accessToken: this.jwtService.sign(payload)}
+      const accessToken = this.jwtService.sign(payload)
+      const refreshToken = "Some random string" //uuidv4()
+
+      /*await this.jwtRepository.save({
+        userId: auth.id,
+        refreshToken
+      })
+
+      return {
+        accessToken,
+        refreshToken
+        }*/
     } 
     else {
       throw new HttpException('Auth not found', HttpStatus.UNAUTHORIZED);
@@ -61,6 +75,37 @@ export class AuthService {
       await this.userRepository.update(user.id, updateUser)
       sendEmail(dto.email, updateUser.code)
     }
+  }
+
+  async refreshTokens() {
+    /*const refresh = await this.refreshTokensRepo.findByToken(refreshToken)
+    if(!refresh) {
+      throw new ForbiddenException()
+    }
+
+    const user = this.userRepository.findOne({
+      where: {
+        id: refresh.userId
+      }
+    })
+
+    if(!user) {
+      throw new ForbiddenException()
+    }
+
+    const payload = {id: user.id, login: Uuserser.login}
+      const accessToken = this.jwtService.sign(payload)
+      const newRefreshToken = "Some random string" //uuidv4()
+
+    a*/
+  }
+
+  async logout() {
+
+  }
+
+  async authMe() {
+
   }
   
 }
