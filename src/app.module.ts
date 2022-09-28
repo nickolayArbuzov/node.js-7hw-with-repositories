@@ -1,6 +1,5 @@
-import { ConfigModule } from '@nestjs/config';
-import config from './configuration/config.configuration';
 import { Module } from '@nestjs/common';
+import { Config } from './configuration/config.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './entities/database/database.module';
@@ -18,11 +17,7 @@ import { AuthModule } from './infrastructure/auth/auth.module';
     AppService,
   ],
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.env', 
-      isGlobal: true,
-      load: [config],
-    }),
+    Config,
     DatabaseModule,
     BloggerModule,
     PostModule,

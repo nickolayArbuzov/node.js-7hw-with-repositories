@@ -1,5 +1,4 @@
 export class Video {
-    id: string;
     title: string;
     author: string;
     availableResolutions: string[];

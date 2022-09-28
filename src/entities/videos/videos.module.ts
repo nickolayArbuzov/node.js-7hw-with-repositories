@@ -8,16 +8,10 @@ import { VideoController } from './videos.controller';
 import { videoProviders } from './videos.providers';
 import { VideoService } from './videos.service';
 
-
-@Module({
+const moduleData = {
   controllers: [VideoController],
   imports: [
     DatabaseModule, 
-    ConfigModule.forRoot({
-      envFilePath: '.env', 
-      isGlobal: true,
-      load: [config],
-    }),
   ],
   providers: [
     ...videoProviders,
@@ -32,5 +26,8 @@ import { VideoService } from './videos.service';
     videoProviders.find(v => v.provide === 'VIDEO_REPOSITORY'), 
     videoProviders.find(v => v.provide === 'VIDEO_MONGOOSE'),
   ]
-})
+}
+
+
+@Module(moduleData)
 export class VideoModule {}

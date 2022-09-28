@@ -3,7 +3,6 @@ import { CreateVideoDto, UpdateVideoDto } from './dto/video.dto';
 import { addDays } from '../../helpers/date';
 import { Model } from 'mongoose';
 import { VideoModel } from './schema/video.interface';
-import { Video } from './schema/video';
 import { IVideoRepositoryInterface } from './interface/repoInterface';
 
 
@@ -15,12 +14,11 @@ export class VideoRepositoryMongo implements IVideoRepositoryInterface {
   ) {}
 
   async findAll() {
-    console.log('mongo')
     return this.videoRepository.find();
   }
 
   async findOne(id: string) {
-    const donorVideo = await this.videoRepository.findOne({where: {id: id}});
+    const donorVideo = await this.videoRepository.findOne({id: id});
     if(donorVideo) {
       return donorVideo
     } else {
@@ -29,24 +27,29 @@ export class VideoRepositoryMongo implements IVideoRepositoryInterface {
   }
 
   async createVideo(dto: CreateVideoDto) {
-    /*const video = new this.videoRepository({
-      title
+    let date = new Date
+    const video = new this.videoRepository({
+      title: dto.title,
+      author: dto.author,
+      availableResolutions: dto.availableResolutions,
+      minAgeRestriction: null,
+      publicationDate: addDays(date, 1).toISOString(),
+      createdAt: date.toISOString(),
     })
     await video.save()
-    const newVideo = new Video()
-    newVideo.title = dto.title
-    newVideo.author = dto.author
-    newVideo.availableResolutions = dto.availableResolutions
-    newVideo.minAgeRestriction = null
-    let date = new Date
-    newVideo.createdAt = date.toISOString()
-    newVideo.publicationDate = addDays(date, 1).toISOString()
-    await this.videoRepository.create(video);
-    return newVideo;*/
+    return {
+      title: video.title, 
+      author: video.author,
+      availableResolutions: video.availableResolutions,
+      minAgeRestriction: video.minAgeRestriction,
+      publicationDate: video.publicationDate,        
+      createdAt: video.createdAt,
+      id: video._id,
+    };
   }
 
   async updateVideo(id: string, dto: UpdateVideoDto) {
-    const donorVideo = await this.videoRepository.findOne({where: {id: id}});
+    const donorVideo = await this.videoRepository.findOne({id: id});
     if(donorVideo) {
       const newVideo = {
         ...donorVideo, 
@@ -57,7 +60,7 @@ export class VideoRepositoryMongo implements IVideoRepositoryInterface {
         canBeDownloaded: dto.canBeDownloaded,
         publicationDate: dto.publicationDate,
       } 
-      //await this.videoRepository.update(id, newVideo);
+      await this.videoRepository.updateOne({id: id}, newVideo);
       return newVideo;
     } else {
       throw new HttpException('Video not found', HttpStatus.NOT_FOUND);
@@ -65,9 +68,9 @@ export class VideoRepositoryMongo implements IVideoRepositoryInterface {
   }
 
   async deleteVideo(id: string) {
-    const donorVideo = await this.videoRepository.findOne({where: {id: id}});
+    const donorVideo = await this.videoRepository.findOne({id: id});
     if(donorVideo) {
-      //await this.videoRepository.delete(id)
+      await this.videoRepository.deleteOne({id: id})
     } else {
       throw new HttpException('Video not found', HttpStatus.NOT_FOUND);
     }

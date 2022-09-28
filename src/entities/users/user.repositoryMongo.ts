@@ -11,7 +11,7 @@ import { QueryUserDto } from '../../helpers/commonDTO/query.dto';
 @Injectable()
 export class UserRepositoryMongo implements IUserRepositoryInterface {
   constructor(
-    @Inject('VIDEO_MONGOOSE')
+    @Inject('USER_MONGOOSE')
     private userRepository: Model<UserModel>,
   ) {}
 

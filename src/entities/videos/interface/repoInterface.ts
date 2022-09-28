@@ -1,4 +1,5 @@
 import { CreateVideoDto, UpdateVideoDto } from "../dto/video.dto"
+import { Video } from "../schema/video"
 
 export interface IVideoRepositoryInterface {
     findAll(): any

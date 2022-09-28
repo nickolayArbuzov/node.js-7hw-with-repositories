@@ -13,11 +13,6 @@ import { UserRepositoryMongo } from './user.repositoryMongo';
   controllers: [UserController],
   imports: [
     DatabaseModule,
-    ConfigModule.forRoot({
-      envFilePath: '.env', 
-      isGlobal: true,
-      load: [config],
-    }),
   ],
   providers: [
     ...userProviders,

@@ -9,8 +9,6 @@ async function start() {
   
   const PORT = Number(process.env.PORT) || 7447
   const app = await NestFactory.create(AppModule, { cors: true })
-  const configService = app.get(ConfigService);
-  console.log(configService)
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.useGlobalPipes(new ValidationPipe({
     stopAtFirstError: true,

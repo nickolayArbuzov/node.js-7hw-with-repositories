@@ -1,4 +1,4 @@
-import { IsString, Length, IsUUID } from "class-validator";
+import { IsString, Length } from "class-validator";
 
 export class CreateCommentDto {
     @IsString()

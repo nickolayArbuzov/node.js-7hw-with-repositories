@@ -65,7 +65,6 @@ describe('PostController (e2e)', () => {
           availableResolutions: ['P144']
         })
       console.log(response.body)
-      console.log(addDays(response.body.createdAt, 1).toISOString())
       expect(response.status).toBe(201);
       expect(response.body).toEqual({ 
         author: "author", 
@@ -74,9 +73,9 @@ describe('PostController (e2e)', () => {
         minAgeRestriction: null,
         publicationDate: addDays(response.body.createdAt, 1).toISOString(),
         title: "title", 
+        id: response.body.id,
+        canBeDownloaded: response.body.canBeDownloaded,
       });
     });
-    
-
   });
 });

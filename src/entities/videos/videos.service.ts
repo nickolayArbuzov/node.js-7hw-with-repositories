@@ -24,12 +24,12 @@ export class VideoService {
     return this.videoRepository.createVideo(dto);
   }
 
-  /*async updateVideo(id: string, dto: UpdateVideoDto) {
+  async updateVideo(id: string, dto: UpdateVideoDto) {
     return this.videoRepository.updateVideo(id, dto);
   }
 
   async deleteVideo(id: string) {
     return this.videoRepository.deleteVideo(id);
-  }*/
+  }
   
 }
