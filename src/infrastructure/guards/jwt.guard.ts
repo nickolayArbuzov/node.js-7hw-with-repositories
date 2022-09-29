@@ -12,6 +12,7 @@ export class JWTGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean {
     const request: Request = context.switchToHttp().getRequest();
+
     if (request.headers?.authorization) {
       if (request.headers?.authorization?.split(' ')[1] === new Buffer('admin:qwerty').toString('base64') && request.headers?.authorization?.split(' ')[0] === 'Basic'){
         return true;
@@ -26,8 +27,16 @@ export class JWTGuard implements CanActivate {
         throw new UnauthorizedException()
       }
     }
+    
     if (request.cookies){
-      console.log('request.cookies', request.cookies)
+      try {
+        const user = this.jwtService.verify(request.cookies.refreshToken)
+        if (user){
+          return true
+        }
+      } catch {
+        throw new UnauthorizedException()
+      }
     }
     throw new UnauthorizedException()
   }
