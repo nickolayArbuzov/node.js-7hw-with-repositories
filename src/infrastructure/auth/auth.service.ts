@@ -73,27 +73,26 @@ export class AuthService {
     }
   }
 
-  async refreshTokens() {
-    /*const refresh = await this.refreshTokensRepo.findByToken(refreshToken)
-    if(!refresh) {
-      throw new ForbiddenException()
-    }
+  async refreshTokens(refreshToken: string) {
 
-    const user = this.userRepository.findOne({
-      where: {
-        id: refresh.userId
+    const refresh = await this.jwtRepository.findOne({where: {refreshToken: refreshToken}})
+    await this.jwtRepository.update(refresh.id, {...refresh, revoke: true})
+    const user = await this.userRepository.findOne({where: {id: refresh.userId}})
+    console.log('refreshToken', user)
+    if(refresh) {
+      const payloadAccess = {id: user.id, login: user.login}
+      const payloadRefresh = {string: v4()}
+      const accessToken = this.jwtService.sign(payloadAccess, {expiresIn: '10s'})
+      const refreshToken = this.jwtService.sign(payloadRefresh, {expiresIn: '20s'})
+      await this.jwtRepository.insert({userId: user.id, refreshToken: refreshToken, revoke: false})
+      return {
+        accessToken,
+        refreshToken
       }
-    })
-
-    if(!user) {
-      throw new ForbiddenException()
+    } else {
+      throw new HttpException('Auth not found', HttpStatus.UNAUTHORIZED)
     }
 
-    const payload = {id: user.id, login: Uuserser.login}
-      const accessToken = this.jwtService.sign(payload)
-      const newRefreshToken = "Some random string" //uuidv4()
-
-    a*/
   }
 
   async logout() {

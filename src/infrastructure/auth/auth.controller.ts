@@ -43,8 +43,7 @@ export class AuthController {
 
     @Post('refresh-token')
     refreshTokens(@Cookies() cookie){
-        console.log('cookie', cookie)
-        return this.authService.refreshTokens()
+        return this.authService.refreshTokens(cookie.refreshToken)
     }
 
     @UseGuards(JWTGuard)
