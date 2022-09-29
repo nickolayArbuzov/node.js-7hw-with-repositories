@@ -26,6 +26,9 @@ export class JWTGuard implements CanActivate {
         throw new UnauthorizedException()
       }
     }
+    if (request.cookies){
+      console.log('request.cookies', request.cookies)
+    }
     throw new UnauthorizedException()
   }
 }
