@@ -47,6 +47,7 @@ export class AuthController {
         return this.authService.refreshTokens(cookie.refreshToken)
     }
 
+    @HttpCode(204)
     @UseGuards(JWTGuard)
     @Post('logout')
     logout(@Req() req){
@@ -56,13 +57,15 @@ export class AuthController {
     @UseGuards(JWTGuard)
     @Get('me')
     getAuthMe(){
-        return this.authService.authMe()
+        console.log('getAuthMe')
+        //return this.authService.authMe()
     }
 
     @UseGuards(JWTGuard)
     @Post('me')
-    authMe(){
-        return this.authService.authMe()
+    authMe(@Cookies() cookie){
+        console.log('postAuthMe')
+        return this.authService.authMe(cookie.refreshToken)
     }
 
 }
