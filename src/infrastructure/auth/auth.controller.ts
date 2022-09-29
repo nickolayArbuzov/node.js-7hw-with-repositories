@@ -53,6 +53,12 @@ export class AuthController {
     }
 
     @UseGuards(JWTGuard)
+    @Get('me')
+    getAuthMe(){
+        return this.authService.authMe()
+    }
+
+    @UseGuards(JWTGuard)
     @Post('me')
     authMe(){
         return this.authService.authMe()
