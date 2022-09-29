@@ -100,8 +100,8 @@ export class AuthService {
 
   }
 
-  async authMe() {
-
+  async authMe(refreshToken: string) {
+    
   }
   
 }
