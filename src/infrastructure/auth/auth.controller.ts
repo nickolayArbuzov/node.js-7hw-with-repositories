@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Res, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Req, Res, UseGuards} from '@nestjs/common';
 import { Cookies } from '../customdecorators/current.user.decorator';
 import { JWTGuard } from '../guards/jwt.guard';
 import {AuthService} from "./auth.service";
@@ -41,15 +41,15 @@ export class AuthController {
         return this.authService.registrationEmailResending(registrationEmailResendingDto)
     }
 
+    @UseGuards(JWTGuard)
     @Post('refresh-token')
     refreshTokens(@Cookies() cookie){
-        console.log('refresh', cookie)
         return this.authService.refreshTokens()
     }
 
     @UseGuards(JWTGuard)
     @Post('logout')
-    logout(){
+    logout(@Req() req){
         return this.authService.logout()
     }
 
