@@ -76,16 +76,14 @@ export class AuthService {
   async refreshTokens(refreshToken: string) {
 
     const refresh = await this.jwtRepository.findOne({where: {refreshToken: refreshToken}})
-    await this.jwtRepository.update(refresh.id, {...refresh, revoke: true})
     const user = await this.userRepository.findOne({where: {id: refresh.userId}})
-    console.log('refreshUser', user)
-    console.log('refreshToken', refresh)
-    if(refresh) {
+    if(refresh && !refresh.revoke) {
       const payloadAccess = {id: user.id, login: user.login}
       const payloadRefresh = {string: v4()}
       const accessToken = this.jwtService.sign(payloadAccess, {expiresIn: '10s'})
       const refreshToken = this.jwtService.sign(payloadRefresh, {expiresIn: '20s'})
       await this.jwtRepository.insert({userId: user.id, refreshToken: refreshToken, revoke: false})
+      await this.jwtRepository.update(refresh.id, {...refresh, revoke: true})
       return {
         accessToken,
         refreshToken
@@ -96,8 +94,13 @@ export class AuthService {
 
   }
 
-  async logout() {
-
+  async logout(refreshToken: string) {
+    const refresh = await this.jwtRepository.findOne({where: {refreshToken: refreshToken}})
+    if(refresh && !refresh.revoke) {
+      await this.jwtRepository.update(refresh.id, {...refresh, revoke: true})
+    } else {
+      throw new HttpException('Auth not found', HttpStatus.UNAUTHORIZED)
+    }
   }
 
   async authMe(refreshToken: string) {

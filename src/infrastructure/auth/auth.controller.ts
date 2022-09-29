@@ -50,8 +50,8 @@ export class AuthController {
     @HttpCode(204)
     @UseGuards(JWTGuard)
     @Post('logout')
-    logout(@Req() req){
-        return this.authService.logout()
+    logout(@Cookies() cookie){
+        return this.authService.logout(cookie.refreshToken)
     }
 
     @UseGuards(JWTGuard)
