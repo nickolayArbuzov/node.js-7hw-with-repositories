@@ -1,4 +1,5 @@
-import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Res} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Res, UseGuards} from '@nestjs/common';
+import { JWTGuard } from '../guards/jwt.guard';
 import {AuthService} from "./auth.service";
 import { AuthDto, RegistrationConfirmationDto, RegistrationDto, RegistrationEmailResendingDto } from './dto/auth.dto';
 
@@ -39,18 +40,21 @@ export class AuthController {
         return this.authService.registrationEmailResending(registrationEmailResendingDto)
     }
 
+    @UseGuards(JWTGuard)
     @Post('refresh-token')
-    refreshTokens(@Body() registrationEmailResendingDto: RegistrationEmailResendingDto ){
+    refreshTokens(){
         return this.authService.refreshTokens()
     }
 
+    @UseGuards(JWTGuard)
     @Post('logout')
-    logout(@Body() registrationEmailResendingDto: RegistrationEmailResendingDto ){
+    logout(){
         return this.authService.logout()
     }
 
+    @UseGuards(JWTGuard)
     @Get('me')
-    authMe(@Body() registrationEmailResendingDto: RegistrationEmailResendingDto ){
+    authMe(){
         return this.authService.authMe()
     }
 
