@@ -20,9 +20,10 @@ export class AuthService {
   async login(dto: AuthDto) {
     const auth: User = await this.userRepository.findOne({where: {login: dto.login, password: dto.password}})
     if (auth) {
-      const payload = {id: auth.id, login: auth.login}
-      const accessToken = this.jwtService.sign(payload, {expiresIn: '10s'})
-      const refreshToken = this.jwtService.sign(v4(), {expiresIn: '20s'})
+      const payloadAccess = {id: auth.id, login: auth.login}
+      const payloadRefresh = {string: v4()}
+      const accessToken = this.jwtService.sign(payloadAccess, {expiresIn: '10s'})
+      const refreshToken = this.jwtService.sign(payloadRefresh, {expiresIn: '20s'})
       await this.jwtRepository.insert({userId: auth.id, refreshToken: refreshToken, revoke: false})
       return {
         accessToken,
