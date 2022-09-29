@@ -23,17 +23,11 @@ export class AuthService {
       const payload = {id: auth.id, login: auth.login}
       const accessToken = this.jwtService.sign(payload)
       const refreshToken = this.jwtService.sign(v4())
-      console.log('accessToken', accessToken)
-      console.log('refreshToken', refreshToken)
-      /*await this.jwtRepository.save({
-        userId: auth.id,
-        refreshToken
-      })
-
+      await this.jwtRepository.insert({userId: auth.id, refreshToken: refreshToken, revoke: false})
       return {
         accessToken,
         refreshToken
-        }*/
+      }
     } 
     else {
       throw new HttpException('Auth not found', HttpStatus.UNAUTHORIZED);
