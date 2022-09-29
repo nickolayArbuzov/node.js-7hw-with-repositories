@@ -5,6 +5,7 @@ import { User } from '../../entities/users/user.entity';
 import { Video } from '../../entities/videos/videos.entity';
 import { Repository } from 'typeorm';
 import { Comment } from '../../entities/comments/comment.entity';
+import { JWT } from '../../entities/jwt/jwt.entity';
 
 @Injectable()
 export class AllDataService {
@@ -19,6 +20,8 @@ export class AllDataService {
     private readonly userRepository: Repository<User>,
     @Inject('COMMENT_REPOSITORY')
     private readonly commentRepository: Repository<Comment>,
+    @Inject('JWT_REPOSITORY')
+    private readonly jwtRepository: Repository<JWT>,
   ) {}
 
   deleteAllData(): void {
@@ -27,6 +30,7 @@ export class AllDataService {
     this.bloggerRepository.delete({})
     this.userRepository.delete({})
     this.commentRepository.delete({})
+    this.jwtRepository.delete({})
   }
   
 }
