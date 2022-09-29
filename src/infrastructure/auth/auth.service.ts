@@ -22,8 +22,9 @@ export class AuthService {
     if (auth) {
       const payload = {id: auth.id, login: auth.login}
       const accessToken = this.jwtService.sign(payload)
-      const refreshToken = "Some random string" //uuidv4()
-
+      const refreshToken = this.jwtService.sign(v4())
+      console.log('accessToken', accessToken)
+      console.log('refreshToken', refreshToken)
       /*await this.jwtRepository.save({
         userId: auth.id,
         refreshToken
