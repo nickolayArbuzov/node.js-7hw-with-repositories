@@ -78,7 +78,8 @@ export class AuthService {
     const refresh = await this.jwtRepository.findOne({where: {refreshToken: refreshToken}})
     await this.jwtRepository.update(refresh.id, {...refresh, revoke: true})
     const user = await this.userRepository.findOne({where: {id: refresh.userId}})
-    console.log('refreshToken', user)
+    console.log('refreshUser', user)
+    console.log('refreshToken', refresh)
     if(refresh) {
       const payloadAccess = {id: user.id, login: user.login}
       const payloadRefresh = {string: v4()}
