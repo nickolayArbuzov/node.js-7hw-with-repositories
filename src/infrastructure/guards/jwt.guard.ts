@@ -12,7 +12,6 @@ export class JWTGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean {
     const request: Request = context.switchToHttp().getRequest();
-    console.log('request.headers', request.headers)
     if (request.headers?.authorization) {
       if (request.headers?.authorization?.split(' ')[1] === new Buffer('admin:qwerty').toString('base64') && request.headers?.authorization?.split(' ')[0] === 'Basic'){
         return true;
