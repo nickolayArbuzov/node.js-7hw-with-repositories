@@ -40,9 +40,9 @@ export class AuthController {
         return this.authService.registrationEmailResending(registrationEmailResendingDto)
     }
 
-    @UseGuards(JWTGuard)
     @Post('refresh-token')
     refreshTokens(){
+        console.log('refresh')
         return this.authService.refreshTokens()
     }
 
