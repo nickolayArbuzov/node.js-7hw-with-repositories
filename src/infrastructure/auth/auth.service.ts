@@ -21,8 +21,8 @@ export class AuthService {
     const auth: User = await this.userRepository.findOne({where: {login: dto.login, password: dto.password}})
     if (auth) {
       const payload = {id: auth.id, login: auth.login}
-      const accessToken = this.jwtService.sign(payload)
-      const refreshToken = this.jwtService.sign(v4())
+      const accessToken = this.jwtService.sign(payload, {expiresIn: '10s'})
+      const refreshToken = this.jwtService.sign(v4(), {expiresIn: '20s'})
       await this.jwtRepository.insert({userId: auth.id, refreshToken: refreshToken, revoke: false})
       return {
         accessToken,
