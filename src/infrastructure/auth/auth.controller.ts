@@ -63,9 +63,9 @@ export class AuthController {
 
     @UseGuards(JWTGuard)
     @Get('me')
-    getAuthMe(){
+    getAuthMe(@Cookies() cookie){
         console.log('getAuthMe')
-        //return this.authService.authMe()
+        return this.authService.authMe(cookie.refreshToken)
     }
 
     @UseGuards(JWTGuard)
