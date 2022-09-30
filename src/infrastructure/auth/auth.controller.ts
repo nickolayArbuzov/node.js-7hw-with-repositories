@@ -1,5 +1,5 @@
 import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Req, Res, UseGuards} from '@nestjs/common';
-import { Cookies } from '../customdecorators/current.user.decorator';
+import { Cookies } from '../customdecorators/cookie.decorator';
 import { JWTGuard } from '../guards/jwt.guard';
 import {AuthService} from "./auth.service";
 import { AuthDto, RegistrationConfirmationDto, RegistrationDto, RegistrationEmailResendingDto } from './dto/auth.dto';
@@ -64,16 +64,16 @@ export class AuthController {
 
     @UseGuards(JWTGuard)
     @Get('me')
-    getAuthMe(@Cookies() cookie){
-        console.log('getAuthMe')
-        return this.authService.authMe(cookie.refreshToken)
+    getAuthMe(@Req() req){
+        console.log('getAuthMe', req.user)
+        return this.authService.authMe()
     }
 
     @UseGuards(JWTGuard)
     @Post('me')
-    authMe(@Cookies() cookie){
+    authMe(){
         console.log('postAuthMe')
-        return this.authService.authMe(cookie.refreshToken)
+        return this.authService.authMe()
     }
 
 }

@@ -103,7 +103,7 @@ export class AuthService {
     }
   }
 
-  async authMe(refreshToken: string) {
+  async authMe() {
     
   }
   
