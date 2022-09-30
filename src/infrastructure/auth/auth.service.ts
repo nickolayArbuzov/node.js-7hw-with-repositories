@@ -103,8 +103,13 @@ export class AuthService {
     }
   }
 
-  async authMe() {
-    
+  async authMe(userId: string) {
+    const user = await this.userRepository.findOne({where: {id: userId}})
+    return {
+      email: user.email,
+      login: user.login,
+      userId: user.id,
+    }
   }
   
 }

@@ -65,15 +65,7 @@ export class AuthController {
     @UseGuards(JWTGuard)
     @Get('me')
     getAuthMe(@Req() req){
-        console.log('getAuthMe', req.user)
-        return this.authService.authMe()
-    }
-
-    @UseGuards(JWTGuard)
-    @Post('me')
-    authMe(){
-        console.log('postAuthMe')
-        return this.authService.authMe()
+        return this.authService.authMe(req.user.id)
     }
 
 }
