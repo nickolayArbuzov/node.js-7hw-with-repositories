@@ -43,8 +43,15 @@ export class AuthController {
 
     @UseGuards(JWTGuard)
     @Post('refresh-token')
-    refreshTokens(@Cookies() cookie){
-        return this.authService.refreshTokens(cookie.refreshToken)
+    async refreshTokens(@Cookies() cookie, @Res({ passthrough: true }) res){
+        const result = await this.authService.refreshTokens(cookie.refreshToken)
+
+        res.cookie('refreshToken', result.refreshToken, {
+            httpOnly: true,
+            secure: true,
+        });
+
+        return { accessToken: result.accessToken };
     }
 
     @HttpCode(204)
