@@ -41,6 +41,7 @@ export class AuthController {
         return this.authService.registrationEmailResending(registrationEmailResendingDto)
     }
 
+    @HttpCode(200)
     @UseGuards(JWTGuard)
     @Post('refresh-token')
     async refreshTokens(@Cookies() cookie, @Res({ passthrough: true }) res){
