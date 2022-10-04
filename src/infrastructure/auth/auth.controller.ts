@@ -1,5 +1,6 @@
 import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Req, Res, UseGuards} from '@nestjs/common';
 import { Cookies } from '../customdecorators/cookie.decorator';
+import { AttemptsGuard } from '../guards/attempts.guard';
 import { JWTGuard } from '../guards/jwt.guard';
 import {AuthService} from "./auth.service";
 import { AuthDto, RegistrationConfirmationDto, RegistrationDto, RegistrationEmailResendingDto } from './dto/auth.dto';
@@ -11,8 +12,10 @@ export class AuthController {
     constructor(private authService: AuthService) {}
 
     @HttpCode(200)
+    @UseGuards(AttemptsGuard)
     @Post('login')
-    async login(@Body() authDto: AuthDto,  @Res({ passthrough: true }) res){
+    async login(@Body() authDto: AuthDto,  @Res({ passthrough: true }) res, @Req() req){
+        
         const result = await this.authService.login(authDto)
 
         res.cookie('refreshToken', result.refreshToken, {
